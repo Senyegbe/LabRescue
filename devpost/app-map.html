@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>LabRescue app map</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #20342e;
+        --muted: #5d7067;
+        --paper: #f6f6f1;
+        --card: #fff;
+        --green: #286b58;
+        --line: #dce6dc;
+        font-family: "Segoe UI", Aptos, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--paper); color: var(--ink); line-height: 1.6; }
+      main { width: min(920px, calc(100% - 32px)); margin: 0 auto; padding: 36px 0 56px; }
+      header, section { margin-bottom: 22px; }
+      .eyebrow { color: var(--green); font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+      h1 { margin: .2rem 0 .6rem; font-size: clamp(2rem, 6vw, 3.2rem); line-height: 1.1; letter-spacing: -.04em; }
+      h2 { margin: 0 0 12px; font-size: 1.3rem; }
+      p { margin: .4rem 0; }
+      .muted { color: var(--muted); }
+      .card { padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: var(--card); }
+      .flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; align-items: stretch; }
+      .flow-item { min-height: 120px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #fbfdf9; }
+      .flow-item strong, .flow-item small { display: block; }
+      .flow-item small { margin-top: 7px; color: var(--muted); overflow-wrap: anywhere; }
+      .arrow { display: none; }
+      ol { padding-left: 1.3rem; }
+      li { margin: 0 0 12px; padding-left: 4px; }
+      code { overflow-wrap: anywhere; color: #205342; background: #edf4ee; border-radius: 4px; padding: .1em .3em; }
+      a { color: #1f634f; text-underline-offset: 3px; }
+      .pointer-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 0; list-style: none; }
+      .pointer-list li { margin: 0; padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+      .note { padding: 14px; border-left: 4px solid #b18b35; background: #fff8e7; }
+      footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+      :focus-visible { outline: 3px solid #b18b35; outline-offset: 3px; }
+      @media (max-width: 700px) {
+        .flow { grid-template-columns: 1fr; }
+        .flow-item { min-height: auto; }
+        .pointer-list { grid-template-columns: 1fr; }
+      }
+      @media print {
+        body { background: #fff; }
+        main { width: 100%; padding: 0; }
+        .card, .flow-item, .pointer-list li { break-inside: avoid; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">LabRescue · Source guide</p>
+        <h1>Follow one classroom report</h1>
+        <p>LabRescue helps a teacher record a classroom-equipment problem, try authored safe checks, keep the lesson going, and prepare a technician handoff.</p>
+        <p class="muted">This is a source-code reference route, not evidence that a guided code tour has been completed.</p>
+      </header>
+
+      <section class="card" aria-labelledby="flow-heading">
+        <h2 id="flow-heading">One action, its code, and the visible result</h2>
+        <div class="flow">
+          <div class="flow-item">
+            <strong>1. Teacher submits report</strong>
+            <small><code>components/ReportForm.tsx</code><br>submit</small>
+          </div>
+          <div class="flow-item">
+            <strong>2. App creates a case</strong>
+            <small><code>components/LabRescueApp.tsx</code><br>createCase</small>
+          </div>
+          <div class="flow-item">
+            <strong>3. Browser saves it</strong>
+            <small><code>lib/case-storage.ts</code><br>saveCases</small>
+          </div>
+          <div class="flow-item">
+            <strong>4. Teacher sees it</strong>
+            <small><code>components/Dashboard.tsx</code><br>open cases</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="route-heading">
+        <h2 id="route-heading">Reference route (2–3 code stops)</h2>
+        <ol>
+          <li><strong>Start at <a href="../components/ReportForm.tsx"><code>components/ReportForm.tsx</code></a>.</strong> Follow the form's <code>submit</code> handler: it validates the report before calling the app.</li>
+          <li><strong>Continue to <a href="../components/LabRescueApp.tsx"><code>components/LabRescueApp.tsx</code></a>.</strong> <code>createCase</code> gives the report an ID and timestamps, then asks the persistence helper to save it.</li>
+          <li><strong>Finish at <a href="../lib/case-storage.ts"><code>lib/case-storage.ts</code></a>, <a href="../components/Dashboard.tsx"><code>components/Dashboard.tsx</code></a>, and <a href="../components/CaseWorkspace.tsx"><code>components/CaseWorkspace.tsx</code></a>.</strong> <code>saveCases</code> writes browser-local data; the dashboard renders open cases from that saved collection. The case workspace also offers technician-confirmed resolution after a successful check, a safety stop, or all checks are complete.</li>
+        </ol>
+      </section>
+
+      <section class="card" aria-labelledby="change-heading">
+        <h2 id="change-heading">To change this, start here</h2>
+        <ul class="pointer-list">
+          <li><strong>Supported report types</strong><br><a href="../lib/types.ts"><code>lib/types.ts</code></a> — <code>ISSUE_TYPES</code>.</li>
+          <li><strong>Safe checks</strong><br><a href="../lib/troubleshooting.ts"><code>lib/troubleshooting.ts</code></a> — authored scenario steps.</li>
+          <li><strong>Built-in lesson backup</strong><br><a href="../lib/fallback-activity.ts"><code>lib/fallback-activity.ts</code></a> — deterministic generator.</li>
+          <li><strong>Optional Gemini API</strong><br><a href="../app/api/fallback/route.ts"><code>app/api/fallback/route.ts</code></a> — server-only request and output checks.</li>
+          <li><strong>Repair confirmation</strong><br><a href="../components/CaseWorkspace.tsx"><code>components/CaseWorkspace.tsx</code></a> — technician-confirmed resolution action.</li>
+        </ul>
+      </section>
+
+      <section class="card" aria-labelledby="practice-heading">
+        <h2 id="practice-heading">A practice to reuse</h2>
+        <p>For the report journey, the PRD specifies a saved open case and local browser storage. The implementation connects validation, case creation, persistence, and dashboard display. On another project, trace one user action through those points and verify the visible result before expanding the feature.</p>
+        <p>Evidence: <a href="../prd.md"><code>prd.md</code> — Core Journey</a>, <a href="../lib/case-storage.ts"><code>lib/case-storage.ts</code></a>, and the successful <code>npm run lint</code> and <code>npm run build</code> checks in the current workspace.</p>
+      </section>
+
+      <section class="card" aria-labelledby="run-heading">
+        <h2 id="run-heading">Run the app</h2>
+        <ol>
+          <li>In the repository folder, run <code>npm install</code>.</li>
+          <li>Run <code>npm run dev</code> and open <a href="http://localhost:3000">http://localhost:3000</a>.</li>
+        </ol>
+        <p class="note"><strong>Storage note:</strong> reports live in this browser on this device; they are not synced or backed up.</p>
+      </section>
+
+      <footer>
+        <p>Base app commit: <code>f1ce85b7d5a9528023de932e8e45dfcd1d8541a0</code>. This map follows the current workspace, including the local repair-confirmation correction; it can drift as the app changes. The correction has not been committed or published.</p>
+        <p>Public repository: <a href="https://github.com/Senyegbe/LabRescue">github.com/Senyegbe/LabRescue</a>. The deployed app is optional for reviewers; a public demo video is still required.</p>
+        <p>Open this file directly at <code>devpost/app-map.html</code>. It is standalone and has no scripts, external assets, or network dependencies.</p>
+      </footer>
+    </main>
+  </body>
+</html>
